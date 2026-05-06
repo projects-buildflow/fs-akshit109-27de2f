@@ -159,15 +159,59 @@ This allows priority styling logic to remain isolated.
 
 ## Server vs Client Components
 
-Interactive components using click handlers require `"use client"`.
+Next.js App Router supports both Server Components and Client Components.
 
-Examples:
-- Column
-- Button
+### Server Components
 
-Static UI components can remain server components for performance optimization.
+Server components render on the server by default and improve:
+- Performance
+- SEO
+- Initial page load speed
+
+These components do not include interactive browser features like:
+- useState
+- useEffect
+- onClick handlers
+
+Examples in this project:
+- `Board.tsx`
+- `PriorityBadge.tsx`
+- `DeveloperProfile.tsx`
+
+These components mainly display UI and data.
 
 ---
+
+### Client Components
+
+Client components are required when:
+- Handling user interaction
+- Using React hooks
+- Managing browser-side state
+
+Client components use:
+
+```tsx
+"use client";
+```
+
+Examples:
+- `Column.tsx`
+- `Button.tsx`
+
+Reason:
+These components contain interactive behavior such as:
+- onClick handlers
+- add task actions
+- loading states
+
+---
+
+### Why this separation matters
+
+Using server components where possible reduces JavaScript sent to the browser and improves performance.
+
+Interactive components are isolated as client components to maintain responsiveness while keeping the application optimized.
 
 # Type Definitions
 
