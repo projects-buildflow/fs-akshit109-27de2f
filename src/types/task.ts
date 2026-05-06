@@ -16,3 +16,10 @@ export interface Task {
   dueDate?: string;
   createdAt: string;
 }
+
+export interface Column {
+  id: string;
+  title: string;
+  color: string;
+  taskIds: string[];
+}
