@@ -1,6 +1,4 @@
-# Component Architecture Review
-
-## 1. Component Hierarchy
+# Component Hierarchy
 
 ```txt
 app/
@@ -25,9 +23,11 @@ src/
     └── utils.ts
 ```
 
+This structure follows a modular architecture where reusable UI components are separated from type definitions and utility functions.
+
 ---
 
-# 2. Data Flow Diagram
+# Data Flow Diagram
 
 ```txt
 Board
@@ -39,16 +39,18 @@ Board
        ├── TaskCard
 ```
 
-### Data Flow Explanation
+## Data Flow Explanation
 
-- `Board` manages and renders multiple columns.
-- Each `Column` receives column information and renders task cards using the `children` prop.
-- Each `TaskCard` receives a `Task` object and displays task details.
-- `PriorityBadge` receives the task priority and displays a colored badge.
+- `Board` manages multiple columns.
+- Each `Column` receives column data and renders task cards using the `children` prop.
+- `TaskCard` receives a `Task` object and displays task information.
+- `PriorityBadge` receives priority data from `TaskCard`.
+
+This approach keeps components reusable and maintainable.
 
 ---
 
-# 3. Props Documentation
+# Props Documentation
 
 ## Button Component
 
@@ -56,12 +58,12 @@ Board
 
 | Prop | Type | Required | Description |
 |------|------|------|------|
-| variant | `"primary" \| "secondary" \| "danger"` | No | Button style variant |
+| variant | `"primary" \| "secondary" \| "danger"` | No | Button style |
 | size | `"sm" \| "md" \| "lg"` | No | Button size |
 | isLoading | `boolean` | No | Shows loading spinner |
 
-### Renders
-Reusable button with variants, sizes, loading state, and accessibility focus styles.
+### Rendered Output
+Reusable button with loading state, variants, and accessibility support.
 
 ---
 
@@ -77,8 +79,8 @@ Reusable button with variants, sizes, loading state, and accessibility focus sty
 | github | string |
 | linkedin | string |
 
-### Renders
-Developer profile card with image, role, and social links.
+### Rendered Output
+Developer profile card with image and social links.
 
 ---
 
@@ -90,8 +92,8 @@ Developer profile card with image, role, and social links.
 |------|------|
 | priority | `"low" \| "medium" \| "high"` |
 
-### Renders
-Colored badge indicating task priority.
+### Rendered Output
+Colored badge representing task priority.
 
 ---
 
@@ -104,8 +106,8 @@ Colored badge indicating task priority.
 | task | Task |
 | onClick | () => void |
 
-### Renders
-Task details including title, description, assignee, and priority.
+### Rendered Output
+Displays task title, description, assignee, and priority.
 
 ---
 
@@ -120,8 +122,8 @@ Task details including title, description, assignee, and priority.
 | children | React.ReactNode |
 | onAddTask | () => void |
 
-### Renders
-Kanban column with header, task list, and add task button.
+### Rendered Output
+Kanban column containing task cards and add task button.
 
 ---
 
@@ -130,41 +132,44 @@ Kanban column with header, task list, and add task button.
 ### Props
 No required props currently.
 
-### Renders
+### Rendered Output
 Horizontal collection of columns with scroll support.
 
 ---
 
-# 4. Design Decisions
+# Design Decisions
 
 ## Why use children prop in Column?
 
-The `children` prop allows the Column component to remain flexible and reusable.  
-Instead of tightly coupling Column to TaskCard, any content can be rendered inside the column body.
+The `children` prop provides flexibility by allowing any content to be rendered inside the column body.  
+This keeps the `Column` component reusable and decoupled from `TaskCard`.
 
 ---
 
 ## Why separate PriorityBadge?
 
-Separating `PriorityBadge` improves:
-- Reusability
-- Maintainability
-- Cleaner TaskCard structure
+The `PriorityBadge` component is separated for:
+- Better reusability
+- Cleaner code structure
+- Easier maintenance
 
-This allows badge styles and logic to be managed independently.
+This allows priority styling logic to remain isolated.
 
 ---
 
 ## Server vs Client Components
 
-- Components with interaction (`onClick`) use `"use client"`.
-- Static UI components can remain server components for better performance.
+Interactive components using click handlers require `"use client"`.
 
-This balances interactivity and optimization.
+Examples:
+- Column
+- Button
+
+Static UI components can remain server components for performance optimization.
 
 ---
 
-# 5. Type Definitions
+# Type Definitions
 
 ## Task Type
 
@@ -206,5 +211,13 @@ export interface Column {
 
 # Conclusion
 
-This architecture follows a modular component-based design using React and Next.js.  
-The structure improves scalability, reusability, maintainability, and developer onboarding.
+The architecture follows a component-based design using React and Next.js.
+
+Key advantages:
+- Reusable components
+- Clear data flow
+- Maintainable structure
+- Type safety with TypeScript
+- Scalable project organization
+
+This documentation helps developers quickly understand the structure and workflow of the application.
