@@ -713,6 +713,6 @@ This layered design improves:
 - readability
 - maintainability
 - separation of concerns
-- scalability
+- scalability.
 
 This foundation supports long-term scalability, maintainability, and collaborative development.
