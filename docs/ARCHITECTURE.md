@@ -578,5 +578,141 @@ The documentation is designed to help new developers quickly understand:
 - data flow
 - design decisions
 - project structure
+# Client vs Server Component Examples
+
+## Example: Server Component
+
+```tsx
+import PriorityBadge from "@/components/PriorityBadge";
+
+const TaskPreview = () => {
+  return <PriorityBadge priority="high" />;
+};
+
+export default TaskPreview;
+```
+
+### Why Server Component?
+
+This component:
+- does not use hooks
+- does not manage browser state
+- does not handle user interaction
+
+Benefits:
+- smaller JavaScript bundle
+- faster rendering
+- improved SEO
+
+---
+
+## Example: Client Component
+
+```tsx
+"use client";
+
+import Button from "@/components/Button";
+
+const AddTaskButton = () => {
+  return (
+    <Button onClick={() => alert("Task Added")}>
+      Add Task
+    </Button>
+  );
+};
+
+export default AddTaskButton;
+```
+
+### Why Client Component?
+
+This component requires:
+- click handling
+- browser interaction
+- client-side execution
+
+Client components are only used when interactivity is necessary.
+
+---
+
+# Future Architectural Considerations
+
+## Potential Future Improvements
+
+The current architecture was designed to support future scalability.
+
+Possible future enhancements:
+- Drag and Drop support
+- API integration
+- Real-time collaboration
+- Authentication and authorization
+- State management with Zustand or Redux
+- Database integration
+- Task filtering and search
+
+---
+
+## Potential Challenges
+
+As the application grows, some architectural challenges may appear:
+
+### Prop Drilling
+
+Passing data through many nested components can become difficult to manage.
+
+Possible solution:
+- React Context
+- Zustand
+- Redux Toolkit
+
+---
+
+### Large Client Bundles
+
+Too many client components can negatively impact performance.
+
+Current strategy:
+- Keep components server-side by default
+- Use `"use client"` only when necessary
+
+---
+
+### Scalability of Task State
+
+Managing tasks locally becomes difficult as features increase.
+
+Future solution:
+- centralized state management
+- API-driven architecture
+
+---
+
+# Visual Workflow Diagram
+
+```txt
+User Action
+    ↓
+Board Component
+    ↓
+Column Component
+    ↓
+TaskCard Component
+    ↓
+PriorityBadge Component
+```
+
+## Workflow Explanation
+
+1. User interacts with the board interface.
+2. `Board` organizes workflow columns.
+3. `Column` groups related tasks.
+4. `TaskCard` displays task information.
+5. `PriorityBadge` visually communicates task urgency.
+
+This layered design improves:
+- readability
+- maintainability
+- separation of concerns
+- scalability
 
 This foundation supports long-term scalability, maintainability, and collaborative development.
