@@ -710,9 +710,9 @@ PriorityBadge Component
 5. `PriorityBadge` visually communicates task urgency.
 
 This layered design improves:
-- readability
-- maintainability
-- separation of concerns
+- readability.
+- maintainability.
+- separation of concerns.
 - scalability.
 
 This foundation supports long-term scalability, maintainability, and collaborative development.
