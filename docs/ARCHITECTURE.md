@@ -28,19 +28,28 @@ src/
 
 ## Architecture Overview
 
-The project follows a modular component-based architecture using React, Next.js, TypeScript, and Tailwind CSS.
+This project follows a scalable component-based architecture using:
 
-The structure separates:
-- UI components
-- Type definitions
-- Utility functions
+- React
+- Next.js
+- TypeScript
+- Tailwind CSS
+
+The codebase is divided into:
+- Components
+- Types
+- Utilities
 - Application routes
+- Documentation
 
-This improves:
+This structure improves:
 - Reusability
 - Maintainability
 - Scalability
+- Team collaboration
 - Developer onboarding
+
+Each component has a single responsibility, making the application easier to understand and extend.
 
 ---
 
@@ -58,19 +67,21 @@ Board
 
 ## Data Flow Explanation
 
-The application follows a top-down component data flow approach.
+The application follows a top-down data flow pattern.
 
-### Flow Steps
+### Step-by-Step Flow
 
-1. `Board` manages and renders all columns.
-2. Each `Column` receives:
-   - column information
-   - task count
-   - child task components
-3. `TaskCard` receives task data from the column.
-4. `PriorityBadge` receives priority data from `TaskCard`.
+1. `Board` manages all Kanban columns.
+2. `Board` passes column information to each `Column`.
+3. `Column` renders task content using the `children` prop.
+4. `TaskCard` receives task data and displays task information.
+5. `PriorityBadge` receives the task priority and applies the correct styling.
 
-This architecture keeps responsibilities separated and components reusable.
+This separation ensures:
+- Clean architecture
+- Better scalability
+- Easier debugging
+- Improved maintainability
 
 ---
 
@@ -83,15 +94,23 @@ Board
        → PriorityBadge ("High")
 ```
 
-### Scenario Explanation
+### Scenario Description
 
-- The `Board` renders a "To Do" column.
-- The column contains multiple task cards.
-- A task card displays task information.
-- The task priority is passed to `PriorityBadge`.
-- `PriorityBadge` determines the correct color and label.
+- The `Board` component renders multiple workflow columns.
+- A column titled `"To Do"` contains pending tasks.
+- The `TaskCard` displays task details such as:
+  - title
+  - description
+  - assignee
+  - priority
+- `PriorityBadge` determines the correct visual indicator.
 
-This layered structure improves maintainability and readability.
+Example:
+- High priority → red badge
+- Medium priority → yellow badge
+- Low priority → green badge
+
+This layered approach keeps business logic separated from UI presentation.
 
 ---
 
@@ -99,63 +118,78 @@ This layered structure improves maintainability and readability.
 
 ## Button Component
 
+### Purpose
+
+Reusable button component supporting:
+- Variants
+- Sizes
+- Loading state
+- Accessibility styles
+
 ### Props
 
 | Prop | Type | Required | Default | Example | Description |
-|------|------|----------|---------|---------|-------------|
-| variant | `"primary" \| "secondary" \| "danger"` | No | `"primary"` | `"danger"` | Controls button appearance and color scheme |
-| size | `"sm" \| "md" \| "lg"` | No | `"md"` | `"lg"` | Controls button padding and font size |
-| isLoading | `boolean` | No | `false` | `true` | Shows spinner and disables interaction |
-| disabled | `boolean` | No | `false` | `true` | Disables the button entirely |
-| onClick | `() => void` | No | — | `handleSubmit` | Click handler callback |
-| children | `React.ReactNode` | Yes | — | `"Submit"` | Button label or content |
+|------|------|------|------|------|------|
+| variant | `"primary" \| "secondary" \| "danger"` | No | `"primary"` | `"danger"` | Controls button appearance |
+| size | `"sm" \| "md" \| "lg"` | No | `"md"` | `"lg"` | Controls button size |
+| isLoading | `boolean` | No | `false` | `true` | Shows loading spinner |
 
-### Examples
+### Example Usage
 
 ```tsx
-// Primary button (default)
 <Button variant="primary" size="md">
-  Submit
+  Save Changes
 </Button>
+```
 
-// Danger button with loading state
-<Button variant="danger" size="sm" isLoading={true}>
-  Delete
+### Loading Example
+
+```tsx
+<Button
+  variant="primary"
+  isLoading
+>
+  Saving
 </Button>
+```
 
-// Disabled secondary button
-<Button variant="secondary" disabled>
-  Unavailable
+### Danger Action Example
+
+```tsx
+<Button variant="danger">
+  Delete Task
 </Button>
 ```
 
 ### Rendered Output
 
-Reusable button supporting:
-- Variants
-- Sizes
-- Loading state
-- Disabled state
-- Accessibility focus styles
+Interactive button with:
+- focus ring
+- loading spinner
+- hover styles
+- disabled state
 
 ---
 
 ## DeveloperProfile Component
 
+### Purpose
+
+Displays developer information and social links.
+
 ### Props
 
-| Prop | Type | Required | Example | Description |
-|------|------|----------|---------|-------------|
-| name | `string` | Yes | `"Akshit Jaiswal"` | Developer's display name |
-| role | `string` | Yes | `"Full Stack Developer"` | Job title or role |
-| image | `string \| StaticImageData` | Yes | `"/akshit.png"` | Profile image source |
-| github | `string` | No | `"https://github.com/akshit109"` | GitHub profile URL |
-| linkedin | `string` | No | `"https://linkedin.com/in/akshit109"` | LinkedIn profile URL |
+| Prop | Type | Example |
+|------|------|------|
+| name | string | `"Akshit Jaiswal"` |
+| role | string | `"Full Stack Developer"` |
+| image | string \| StaticImageData | `"/akshit.png"` |
+| github | string | `"https://github.com/akshit109"` |
+| linkedin | string | `"https://linkedin.com/in/akshit109"` |
 
-### Examples
+### Example Usage
 
 ```tsx
-// Full profile with social links
 <DeveloperProfile
   name="Akshit Jaiswal"
   role="Full Stack Developer"
@@ -163,131 +197,137 @@ Reusable button supporting:
   github="https://github.com/akshit109"
   linkedin="https://linkedin.com/in/akshit109"
 />
-
-// Minimal profile without social links
-<DeveloperProfile
-  name="Alex Chen"
-  role="Tech Lead"
-  image="/alex.png"
-/>
 ```
 
 ### Rendered Output
 
 Profile card displaying:
-- Developer image
-- Name
-- Role
-- Social links (if provided)
+- avatar image
+- name
+- role
+- GitHub link
+- LinkedIn link
 
 ---
 
 ## PriorityBadge Component
 
+### Purpose
+
+Displays task priority visually using color-coded badges.
+
 ### Props
 
-| Prop | Type | Required | Example | Description |
-|------|------|----------|---------|-------------|
-| priority | `"low" \| "medium" \| "high"` | Yes | `"high"` | Determines badge color and label |
+| Prop | Type | Example |
+|------|------|------|
+| priority | `"low" \| "medium" \| "high"` | `"high"` |
 
-### Examples
+### Example Usage
 
 ```tsx
-// High priority — renders red badge
 <PriorityBadge priority="high" />
-
-// Medium priority — renders yellow badge
-<PriorityBadge priority="medium" />
-
-// Low priority — renders green badge
-<PriorityBadge priority="low" />
 ```
+
+### Priority Styles
+
+| Priority | Color |
+|------|------|
+| low | Green |
+| medium | Yellow |
+| high | Red |
 
 ### Rendered Output
 
-Displays a colored priority badge:
-- 🟢 Green → Low
-- 🟡 Yellow → Medium
-- 🔴 Red → High
+Rounded colored badge indicating task priority.
 
 ---
 
 ## TaskCard Component
 
+### Purpose
+
+Displays task information inside Kanban columns.
+
 ### Props
 
-| Prop | Type | Required | Example | Description |
-|------|------|----------|---------|-------------|
-| task | `Task` | Yes | `sampleTask` | Full task object (see Task type) |
-| onClick | `() => void` | No | `handleClick` | Called when the card is clicked |
+| Prop | Type | Example |
+|------|------|------|
+| task | Task | `sampleTask` |
+| onClick | () => void | `handleOpenTask` |
 
-### Examples
+### Example Usage
 
 ```tsx
-// Basic task card
 <TaskCard task={sampleTask} />
+```
 
-// Task card with click handler (e.g. open detail modal)
+### Click Interaction Example
+
+```tsx
 <TaskCard
-  task={sampleTask}
-  onClick={() => openTaskDetail(sampleTask.id)}
+  task={task}
+  onClick={() => openTaskModal(task.id)}
 />
 ```
 
 ### Rendered Output
 
 Displays:
-- Task title
-- Description
-- Priority badge
-- Assignee information
+- task title
+- description
+- assignee
+- priority badge
+
+The card also supports hover and click interactions.
 
 ---
 
 ## Column Component
 
+### Purpose
+
+Groups related tasks into workflow stages.
+
 ### Props
 
-| Prop | Type | Required | Example | Description |
-|------|------|----------|---------|-------------|
-| column | `Column` | Yes | `todoColumn` | Column metadata (id, title, color) |
-| taskCount | `number` | Yes | `3` | Number displayed in the column header badge |
-| children | `React.ReactNode` | No | `<TaskCard />` | Task cards rendered inside the column |
-| onAddTask | `() => void` | No | `handleAddTask` | Called when the "Add task" button is clicked |
+| Prop | Type | Example |
+|------|------|------|
+| column | Column | `todoColumn` |
+| taskCount | number | `5` |
+| children | React.ReactNode | `<TaskCard />` |
+| onAddTask | () => void | `handleAddTask` |
 
-### Examples
+### Example Usage
 
 ```tsx
-// Column with tasks
-<Column column={todoColumn} taskCount={3} onAddTask={handleAddTask}>
+<Column column={todoColumn} taskCount={3}>
   <TaskCard task={task1} />
   <TaskCard task={task2} />
-  <TaskCard task={task3} />
-</Column>
-
-// Empty column
-<Column column={doneColumn} taskCount={0} onAddTask={handleAddTask}>
-  {/* No tasks yet */}
 </Column>
 ```
 
 ### Rendered Output
 
-Kanban column containing:
-- Header with column title
-- Task count badge
-- Scrollable task list
-- Add task button
+Displays:
+- column header
+- color indicator
+- task count badge
+- task list
+- add task button
 
 ---
 
 ## Board Component
 
+### Purpose
+
+Main layout component for the Kanban board.
+
 ### Props
 
-Currently no required props. Board manages its own internal state and renders columns from data.
+Currently no required props.
 
-### Example
+### Example Usage
 
 ```tsx
 <Board />
@@ -295,99 +335,145 @@ Currently no required props. Board manages its own internal state and renders co
 
 ### Rendered Output
 
-Horizontal Kanban board displaying multiple columns with horizontal scrolling.
+Horizontally scrollable board containing multiple columns.
 
 ---
 
 # Design Decisions
 
-## Why use the `children` prop in Column?
-
-The `children` prop keeps the `Column` component flexible and decoupled from `TaskCard`.
-
-**The problem it solves:** If `Column` directly imported and rendered `TaskCard`, any future change to the card format — a new card type, a drag-and-drop wrapper, a loading skeleton — would require modifying `Column` itself. That couples two components that have no real reason to depend on each other.
-
-**How `children` fixes this:** By accepting `children`, `Column` becomes a layout container. It manages the header, the task count badge, the scroll area, and the "Add task" button — all things that belong to a column regardless of what's inside it. The parent (Board) decides what to render inside each column. This means `Column` never needs to change when card types change.
-
-This follows React's composition principle: build containers that are unaware of their contents, and pass content in from above.
-
----
-
-## Why separate `PriorityBadge`?
-
-At first glance, it would be simpler to render the priority color and label directly inside `TaskCard`. The reason to extract it is about future change.
-
-**Centralised styling:** Priority colors and labels are referenced in at least two places — `TaskCard` and potentially a filter UI or a task detail modal. Without a dedicated component, any update to priority styling (a new priority level, a rebrand, an accessibility fix for color-blind users) requires finding and updating every place that renders priority. With `PriorityBadge`, that update happens in exactly one file.
-
-**Cleaner TaskCard:** `TaskCard` is already responsible for layout, title, description, and assignee. Adding conditional color logic for priority makes it harder to read. Extracting to `PriorityBadge` keeps each component focused on a single job.
-
-**Easier testing:** A standalone `PriorityBadge` can be tested in isolation — all three variants, edge cases, unknown values — without mounting a full `TaskCard`.
-
----
-
 ## Why use reusable components?
 
-Every time the same UI is written twice, it creates two sources of truth. When a design change or bug fix comes in, both copies need to be updated. In practice, one copy always gets missed.
+Reusable components:
+- reduce duplicate code
+- improve consistency
+- simplify maintenance
+- improve scalability
 
-Reusable components solve this by making the component the single source of truth for its own appearance and behaviour. A `Button` with an `isLoading` prop handles its spinner, disabled state, and cursor in one place. Every part of the app that uses `Button` gets that behaviour automatically when it changes.
+This architecture allows components to be reused across multiple pages and features.
 
-The secondary benefit is consistency: reusable components ensure the same spacing, typography, and interaction patterns everywhere, without requiring each developer to remember the details.
+---
+
+## Why use children prop in Column?
+
+The `children` prop allows the `Column` component to remain flexible.
+
+Benefits:
+- Decouples Column from TaskCard
+- Supports rendering different content types
+- Improves scalability
+- Follows React composition principles
+
+Without `children`, Column would become tightly coupled to a specific task implementation.
+
+---
+
+## Why separate PriorityBadge?
+
+Separating `PriorityBadge` improves:
+- reusability
+- readability
+- maintainability
+
+Benefits:
+- centralized priority styling
+- cleaner TaskCard component
+- easier future updates
+
+Example:
+If priority colors change later, updates only happen in one component.
+
+---
+
+## Why use TypeScript interfaces?
+
+TypeScript interfaces improve:
+- type safety
+- autocomplete
+- developer experience
+- maintainability
+
+Benefits in this project:
+- prevents invalid data structures
+- ensures consistent props
+- reduces runtime bugs
+
+This becomes increasingly important as applications grow larger.
+
+---
+
+## Why use Tailwind CSS?
+
+Tailwind CSS was selected because it:
+- speeds up development
+- reduces custom CSS files
+- improves consistency
+- supports responsive design easily
+
+Utility-first styling also simplifies maintenance.
 
 ---
 
 ## Server vs Client Components
 
 Next.js App Router supports:
-- Server Components (default)
-- Client Components (`"use client"` directive)
+- Server Components
+- Client Components
 
 ---
 
 ### Server Components
 
-Server components render on the server, reducing the amount of JavaScript sent to the browser.
+Server components render on the server and improve:
+- performance
+- SEO
+- initial page load speed
 
-**Why this matters:** A component like `DeveloperProfile` just receives props and returns markup. It has no click handlers, no hooks, no state. Rendering it on the server means the browser receives finished HTML for that section — faster initial paint, better SEO, smaller client bundle.
+Examples:
+- `Board.tsx`
+- `PriorityBadge.tsx`
+- `DeveloperProfile.tsx`
 
-**When to use server components:**
-- Static or data-driven UI with no interactivity
-- Components that fetch their own data
-- Anything where SEO or initial load performance is a priority
-
-Examples in this project:
-- `Board.tsx` — data composition, no direct interaction
-- `PriorityBadge.tsx` — pure display, no state
-- `DeveloperProfile.tsx` — static profile card
+These components mainly display UI without browser interaction.
 
 ---
 
 ### Client Components
 
-Client components are required whenever a component needs to respond to user interaction.
+Client components are required for:
+- click handlers
+- browser interactivity
+- React hooks
+- local state management
 
-**Why the boundary matters:** Marking a component `"use client"` tells Next.js to include it in the JavaScript bundle sent to the browser. Overusing this increases bundle size and slows down the page. The goal is to push the client/server boundary as low in the tree as possible — make the outer layout a server component, and only opt into client rendering for the specific interactive leaf nodes.
+Client components use:
 
-**When to use client components:**
-- Event handlers (`onClick`, `onChange`, `onSubmit`)
-- React hooks (`useState`, `useEffect`, `useRef`)
-- Browser APIs (localStorage, window, document)
+```tsx
+"use client";
+```
 
-Examples in this project:
-- `Column.tsx` — contains `onAddTask` click handler
-- `Button.tsx` — manages `isLoading` state and click events
+Examples:
+- `Button.tsx`
+- `Column.tsx`
+
+These handle:
+- loading states
+- button interactions
+- add task actions
 
 ---
 
 ## Why separate server and client components?
 
-Keeping the server/client boundary intentional produces measurable benefits:
+Benefits:
+- smaller client bundles
+- improved performance
+- faster rendering
+- better scalability
 
-- **Smaller bundle:** Server components are never included in client-side JavaScript
-- **Faster rendering:** Static markup is generated at build time or on the server, not in the browser
-- **Better SEO:** Server-rendered HTML is immediately available to crawlers
-- **Simpler mental model:** Each component has a clear, single mode of operation
-
-The rule of thumb: start every component as a server component. Only add `"use client"` when the component genuinely needs it.
+This creates an optimized balance between:
+- interactivity
+- performance
+- maintainability
 
 ---
 
@@ -399,7 +485,9 @@ The rule of thumb: start every component as a server component. Only add `"use c
 export type Priority = "low" | "medium" | "high";
 ```
 
-Defines available priority levels as a union type, ensuring only valid values can be passed to `PriorityBadge` and stored on `Task` objects.
+### Purpose
+
+Defines available task priority levels.
 
 ---
 
@@ -426,7 +514,14 @@ export interface Task {
 
 ### Purpose
 
-Represents a task object inside the Kanban board. Optional fields (`description`, `assignee`, `dueDate`) allow tasks to be created with minimal data and enriched later.
+Represents a task inside the Kanban workflow.
+
+### Key Features
+
+- optional description
+- optional assignee
+- typed priority system
+- creation timestamps
 
 ---
 
@@ -443,62 +538,45 @@ export interface Column {
 
 ### Purpose
 
-Represents a Kanban board column. `taskIds` stores references to tasks rather than embedding task objects, keeping column data lightweight and making reordering straightforward.
+Represents a Kanban workflow column.
+
+### Example Columns
+
+- To Do
+- In Progress
+- Done
 
 ---
 
-# Code Review
+# Scalability Considerations
 
-**Reviewer:** Alex Chen, Tech Lead
-**Score:** 26 / 100
-**Status:** 🔄 Feedback — push fixes to re-run review
+The architecture was designed to support future enhancements such as:
+- drag and drop
+- API integration
+- authentication
+- task filtering
+- search
+- real-time collaboration
 
----
-
-## Feedback Summary
-
-The architecture documentation is well-structured and covers all the required aspects. It showcases a sound understanding of data flow and component responsibilities. Minor improvements could be made in the completeness of components' props documentation and further elaboration on the design decisions section.
-
----
-
-## Strengths
-
-- Well-structured and organized documentation
-- Clear explanation of data flow and component hierarchy
-- Thoughtful separation of components and reuse of code
-
----
-
-## Areas for Improvement
-
-- Include more detailed 'why' explanations in the design decisions section
-- Expand the examples in the props documentation to cover more edge cases or usage scenarios
-
----
-
-## Reviewer Note
-
-> **Alex Chen:** You're making excellent progress! Remember, diving deeper into 'why' can often illuminate new insights into the architecture and its capabilities. Keep up the fantastic work.
-
----
-
-*Push fixes to this branch and the review will run again automatically.*
+The modular structure ensures future features can be added with minimal refactoring.
 
 ---
 
 # Conclusion
 
-This project follows a scalable component-driven architecture using:
-- React
-- Next.js
-- TypeScript
-- Tailwind CSS
+This project follows a scalable and maintainable frontend architecture using modern React and Next.js practices.
 
-The structure emphasizes:
-- Reusability
-- Clear data flow
-- Type safety
-- Separation of concerns
-- Maintainability
+Core architectural principles:
+- reusable components
+- separation of concerns
+- top-down data flow
+- type safety
+- modular organization
 
-The architecture is designed to support future expansion while remaining easy for new developers to understand and contribute to.
+The documentation is designed to help new developers quickly understand:
+- component relationships
+- data flow
+- design decisions
+- project structure
+
+This foundation supports long-term scalability, maintainability, and collaborative development.
