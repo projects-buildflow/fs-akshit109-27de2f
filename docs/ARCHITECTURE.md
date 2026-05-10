@@ -672,6 +672,155 @@ Represents workflow columns such as:
 - Done
 
 ---
+# Advanced Scaling Strategy
+
+As the application grows, additional architectural strategies may be required to maintain performance, scalability, and maintainability.
+
+---
+
+## Global State Management Strategy
+
+Currently, the application uses local component props for passing data.
+
+Example flow:
+
+```txt
+Board → Column → TaskCard → PriorityBadge
+```
+
+This approach works well for small-to-medium applications because:
+- components remain simple
+- state is predictable
+- debugging is easier
+
+However, as the application scales, deeply nested prop passing may lead to:
+- prop drilling
+- duplicated logic
+- unnecessary re-renders
+- increased maintenance complexity
+
+---
+
+## Future State Management Solutions
+
+### React Context API
+
+For shared global values such as:
+- authenticated user
+- theme settings
+- modal visibility
+- filters
+
+React Context can reduce prop drilling and centralize shared state.
+
+Example:
+
+```txt
+App
+ └── TaskProvider
+      ├── Board
+      ├── Column
+      └── TaskCard
+```
+
+Benefits:
+- simpler prop management
+- centralized shared state
+- cleaner component tree
+
+---
+
+### Zustand
+
+For medium-to-large applications, Zustand provides:
+- lightweight global state
+- minimal boilerplate
+- better scalability
+- easier async handling
+
+Potential future store structure:
+
+```ts
+type TaskStore = {
+  tasks: Task[];
+  addTask: () => void;
+  updateTask: () => void;
+  deleteTask: () => void;
+};
+```
+
+Benefits:
+- cleaner business logic
+- scalable architecture
+- reduced prop drilling
+
+---
+
+### Redux Toolkit
+
+For enterprise-level scaling, Redux Toolkit may be introduced.
+
+Possible future use cases:
+- analytics dashboards
+- collaborative editing
+- notifications
+- offline synchronization
+
+Benefits:
+- predictable state management
+- middleware support
+- debugging tools
+- scalable async workflows
+
+---
+
+# Visual Scaling Diagram
+
+```txt
+Global Store
+      ↓
+Board
+ ├── Column
+ │     ├── TaskCard
+ │     │      └── PriorityBadge
+ │
+ └── Column
+```
+
+This structure reduces unnecessary prop passing and simplifies state synchronization across the application.
+
+---
+
+# Performance Optimization Strategy
+
+Future optimizations may include:
+
+- React.memo for preventing unnecessary re-renders
+- Dynamic imports for code splitting
+- API caching
+- Pagination or virtualization for large task lists
+- Optimistic UI updates
+- Server-side data fetching
+
+These optimizations help maintain performance as the number of tasks and users increases.
+
+---
+
+# Future Tooling Considerations
+
+Potential future tooling:
+- Zustand for state management
+- React Query / TanStack Query for API caching
+- Storybook for isolated component testing
+- Jest + React Testing Library
+- CI/CD pipelines with GitHub Actions
+- Docker for deployment consistency
+
+These tools improve:
+- maintainability
+- developer productivity
+- scalability
+- testing reliability
 
 # Conclusion
 
